@@ -1,7 +1,7 @@
 # Entry URL Field
  
 Version: 1.0  
-Author: [Nick Dunn](http://nick-dunn.co.uk)
+Author: [Nick Dunn](http://nick-dunn.co.uk)  
 Build Date: 30 November 2009  
 Requirements: Symphony 2.0.6+
 
@@ -17,7 +17,7 @@ Requirements: Symphony 2.0.6+
 When adding this field to a section, the following options are available to you:
 
 * **Anchor Label** is the text used for the hyperlink in the backend
-* **Anchor URL** is the URL of your entry view page on the frontend. An `<entry>...</entry>` nodeset is provided from which you can grab field values. For example:
+* **Anchor URL** is the URL of your entry view page on the frontend. An `<entry id="123">...</entry>` nodeset is provided from which you can grab field values, just as you would from a datasource. For example:
 
 		/members/profile/{entry/name/@handle}/
 
