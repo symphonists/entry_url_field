@@ -110,7 +110,7 @@
 			$allow_override = null;
 			
 			$label = Widget::Label($this->get('label'));
-			$span = new XMLElement('span');
+			$span = new XMLElement('span', NULL, array('class' => 'frame'));
 			
 			$anchor = Widget::Anchor(
 				$this->get('anchor_label'),
