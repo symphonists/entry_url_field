@@ -1,9 +1,9 @@
 # Entry URL Field
  
-Version: 1.0  
-Author: [Nick Dunn](http://nick-dunn.co.uk)  
-Build Date: 30 November 2009  
-Requirements: Symphony 2.0.6+
+* Version: 1.1
+* Author: [Nick Dunn](http://nick-dunn.co.uk)
+* Build Date: 2011-02-07
+* Requirements: Symphony 2.2
 
 ## Installation
  
