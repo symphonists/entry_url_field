@@ -19,7 +19,7 @@ When adding this field to a section, the following options are available to you:
 * **Anchor Label** is the text used for the hyperlink in the backend
 * **Anchor URL** is the URL of your entry view page on the frontend. An `<entry id="123">...</entry>` nodeset is provided from which you can grab field values, just as you would from a datasource. For example:
 
-		/members/profile/{entry/name/@handle}/
+	/members/profile/{entry/name/@handle}/
 
 * **Open links in a new window** enforces the hyperlink to spawn a new tab/window
 * **Hide this field on publish page** hides the hyperlink in the entry edit form
