@@ -88,7 +88,7 @@
 			}
 			
 			// Add fields:
-			$fm = new FieldManager(Administration::instance());
+			$fm = new FieldManager(Symphony::Engine());
 			foreach ($data as $field_id => $values) {
 				if (empty($field_id)) continue;
 				
