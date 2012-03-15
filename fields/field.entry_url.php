@@ -5,11 +5,11 @@
 	class FieldEntry_URL extends Field {
 		protected static $ready = true;
 		
-		public function __construct(&$parent) {
-			parent::__construct($parent);
+		public function __construct() {
+			parent::__construct();
 			
 			$this->_name = 'Entry URL';
-			$this->_driver = $this->_engine->ExtensionManager->create('entry_url_field');
+			$this->_driver = ExtensionManager::create('entry_url_field');
 			
 			// Set defaults:
 			$this->set('show_column', 'no');
@@ -20,14 +20,13 @@
 		public function createTable() {
 			$field_id = $this->get('id');
 			
-			return $this->_engine->Database->query("
+			return Symphony::Database()->query("
 				CREATE TABLE IF NOT EXISTS `tbl_entries_data_{$field_id}` (
 					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`entry_id` INT(11) UNSIGNED NOT NULL,
 					`value` TEXT DEFAULT NULL,
 					PRIMARY KEY (`id`),
-					KEY `entry_id` (`entry_id`),
-					FULLTEXT KEY `value` (`value`)
+					KEY `entry_id` (`entry_id`)
 				)
 			");
 		}
@@ -41,32 +40,32 @@
 			
 			$order = $this->get('sortorder');
 			
-			$label = Widget::Label('Anchor Label');
+			$label = Widget::Label(__('Anchor Label'));
 			$label->appendChild(Widget::Input(
 				"fields[{$order}][anchor_label]",
 				$this->get('anchor_label')
 			));
 			$wrapper->appendChild($label);
 			
-			$label = Widget::Label('Anchor URL (XPath expression)');
+			$label = Widget::Label(__('Anchor URL (XPath expression)'));
 			$label->appendChild(Widget::Input(
 				"fields[{$order}][expression]",
 				$this->get('expression')
 			));			
-			$help = new XMLElement('p', 'To access the other fields, use XPath: <code>{entry/field-one} static text {entry/field-two}</code>.');
+			$help = new XMLElement('p', __('To access the other fields, use XPath: <code>{entry/field-one} static text {entry/field-two}</code>.'));
 			$help->setAttribute('class', 'help');
 			$wrapper->appendChild($label);
 			
 			$label = Widget::Label();
 			$input = Widget::Input("fields[{$order}][new_window]", 'yes', 'checkbox');
 			if ($this->get('new_window') == 'yes') $input->setAttribute('checked', 'checked');
-			$label->setValue($input->generate() . ' Open links in a new window');
+			$label->setValue($input->generate() . ' ' . __('Open links in a new window'));
 			$wrapper->appendChild($label);
 			
 			$label = Widget::Label();
 			$input = Widget::Input("fields[{$order}][hide]", 'yes', 'checkbox');
 			if ($this->get('hide') == 'yes') $input->setAttribute('checked', 'checked');
-			$label->setValue($input->generate() . ' Hide this field on publish page');
+			$label->setValue($input->generate() . ' ' . __('Hide this field on publish page'));
 			$wrapper->appendChild($label);
 			
 			$this->appendShowColumnCheckbox($wrapper);
@@ -89,15 +88,8 @@
 				'hide'				=> $this->get('hide')
 			);
 			
-			$this->Database->query("
-				DELETE FROM
-					`tbl_fields_{$handle}`
-				WHERE
-					`field_id` = '{$id}'
-				LIMIT 1
-			");
-			
-			return $this->Database->insert($fields, "tbl_fields_{$handle}");
+			Symphony::Database()->query("DELETE FROM `tbl_fields_{$handle}` WHERE `field_id` = '{$id}' LIMIT 1");
+			return Symphony::Database()->insert($fields, "tbl_fields_{$handle}");
 		}
 		
 	/*-------------------------------------------------------------------------
@@ -114,7 +106,7 @@
 			
 			$anchor = Widget::Anchor(
 				$this->get('anchor_label'),
-				$data['value']
+				is_null($data['value']) ? '#' : (string)$data['value']
 			);
 			
 			if ($this->get('new_window') == 'yes') {
@@ -124,7 +116,7 @@
 			$callback = Administration::instance()->getPageCallback();
 			if (is_null($callback['context']['entry_id'])) {
 				$span->setValue(__('The link will be created after saving this entry'));
-				$span->setAttribute('class', 'inactive');
+				$span->setAttribute('class', 'frame inactive');
 			} else {
 				$span->appendChild($anchor);
 			}
@@ -208,11 +200,11 @@
 			);
 			
 			// Save:
-			$result = $this->Database->update(array(
-				'value'				=> $value
-			), "tbl_entries_data_{$field_id}", "
-				`entry_id` = '{$entry_id}'
-			");
+			$result = Symphony::Database()->update(
+				array('value' => $value),
+				"tbl_entries_data_{$field_id}",
+				"`entry_id` = '{$entry_id}'"
+			);
 		}
 		
 		

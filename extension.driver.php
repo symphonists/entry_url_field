@@ -4,25 +4,12 @@
 		
 		protected static $fields = array();
 		
-		public function about() {
-			return array(
-				'name'			=> 'Field: Entry URL',
-				'version'		=> '1.1',
-				'release-date'	=> '2011-02-07',
-				'author'		=> array(
-					'name'			=> 'Nick Dunn',
-					'website'		=> 'http://nick-dunn.co.uk/'
-				),
-				'description' => 'Add a hyperlink in the backend to view an entry page/URL in the frontend'
-			);
-		}
-		
 		public function uninstall() {
-			$this->_Parent->Database->query("DROP TABLE `tbl_fields_entry_url`");
+			Symphony::Database()->query("DROP TABLE `tbl_fields_entry_url`");
 		}
 		
 		public function install() {
-			$this->_Parent->Database->query("
+			Symphony::Database()->query("
 				CREATE TABLE IF NOT EXISTS `tbl_fields_entry_url` (
 					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`field_id` INT(11) UNSIGNED NOT NULL,
@@ -73,26 +60,16 @@
 			
 			if (is_array($associated) and !empty($associated)) {
 				foreach ($associated as $section => $count) {
-					$handle = Symphony::Database()->fetchVar('handle', 0, "
-						SELECT
-							s.handle
-						FROM
-							`tbl_sections` AS s
-						WHERE
-							s.id = '{$section}'
-						LIMIT 1
-					");
-					
-					$entry_xml->setAttribute($handle, (string)$count);
+					$related_section = SectionManager::fetch($section);
+					$entry_xml->setAttribute($related_section->get('handle'), (string)$count);
 				}
 			}
 			
 			// Add fields:
-			$fm = new FieldManager(Symphony::Engine());
 			foreach ($data as $field_id => $values) {
 				if (empty($field_id)) continue;
 				
-				$field =& $fm->fetch($field_id);
+				$field = FieldManager::fetch($field_id);
 				$field->appendFormattedElement($entry_xml, $values, false);
 			}
 			
