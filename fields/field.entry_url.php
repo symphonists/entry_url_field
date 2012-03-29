@@ -105,7 +105,7 @@
 			$span = new XMLElement('span', NULL, array('class' => 'frame'));
 			
 			$anchor = Widget::Anchor(
-				$this->get('anchor_label'),
+				(string)$this->get('anchor_label'),
 				is_null($data['value']) ? '#' : (string)$data['value']
 			);
 			
