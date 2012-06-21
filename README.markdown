@@ -11,7 +11,10 @@
 
 When adding this field to a section, the following options are available to you:
 
-* **Anchor Label** is the text used for the hyperlink in the backend
+* **Anchor Label** is the text used for the hyperlink in the backend. An `<entry id="123">...</entry>` nodeset is provided from which you can grab field values, just as you would from a datasource. For example:
+
+	/members/profile/{entry/name}/
+
 * **Anchor URL** is the URL of your entry view page on the frontend. An `<entry id="123">...</entry>` nodeset is provided from which you can grab field values, just as you would from a datasource. For example:
 
 	/members/profile/{entry/name/@handle}/
