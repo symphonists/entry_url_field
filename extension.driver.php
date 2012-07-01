@@ -7,6 +7,21 @@
 		public function uninstall() {
 			Symphony::Database()->query("DROP TABLE `tbl_fields_entry_url`");
 		}
+
+		public function update($prev_version){
+			if( version_compare($prev_version, '1.3.0', '<') ){
+				$fields = Symphony::Database()->fetch("SELECT `field_id`,`anchor_label` FROM `tbl_fields_entry_url`");
+
+				foreach( $fields as $field ){
+					$entries_table = 'tbl_entries_data_'.$field["field_id"];
+
+					Symphony::Database()->query("ALTER TABLE `{$entries_table}` ADD COLUMN `label` TEXT DEFAULT NULL");
+					Symphony::Database()->update(array('label' => $field['anchor_label']), $entries_table);
+				}
+			}
+
+			return true;
+		}
 		
 		public function install() {
 			Symphony::Database()->query("
@@ -14,7 +29,7 @@
 					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`field_id` INT(11) UNSIGNED NOT NULL,
 					`anchor_label` VARCHAR(255) DEFAULT NULL,
-					`expression` VARCHAR(255) DEFAULT NULL,					
+					`expression` VARCHAR(255) DEFAULT NULL,
 					`new_window` ENUM('yes', 'no') DEFAULT 'no',
 					`hide` ENUM('yes', 'no') DEFAULT 'no',
 					PRIMARY KEY (`id`),
@@ -51,8 +66,7 @@
 		
 		public function getXPath($entry) {
 			$entry_xml = new XMLElement('entry');
-			$section_id = $entry->get('section_id');
-			$data = $entry->getData(); $fields = array();
+			$data = $entry->getData();
 			
 			$entry_xml->setAttribute('id', $entry->get('id'));
 			
