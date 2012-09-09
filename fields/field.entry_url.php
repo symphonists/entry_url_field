@@ -103,7 +103,7 @@
 			
 			$anchor = Widget::Anchor(
 				(string)$data['label'],
-				is_null($data['value']) ? '#' : (string)$data['value']
+				is_null($data['value']) ? '#' : $this->formatURL((string)$data['value'])
 			);
 			
 			if ($this->get('new_window') == 'yes') {
@@ -155,9 +155,16 @@
 		public function prepareTableValue($data, XMLElement $link = null) {
 			if (empty($data)) return;
 			
-			$anchor =  Widget::Anchor($data['label'], $data['value']);
+			$anchor =  Widget::Anchor($data['label'], $this->formatURL($data['value']));
 			if ($this->get('new_window') == 'yes') $anchor->setAttribute('target', '_blank');
 			return $anchor->generate();
+		}
+		
+		public function formatURL($url) {
+			// ignore if an absolute URL
+			if(preg_match("/^http/", $url)) return $url;
+			// deal with Sym in subdirectories
+			return URL . $url;
 		}
 		
 	/*-------------------------------------------------------------------------
