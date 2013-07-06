@@ -2,12 +2,15 @@
 <extension id="entry_url_field" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Entry URL Field</name>
 	<description>Add a hyperlink in the backend to view an entry URL in the frontend</description>
-	<repo type="github">https://github.com/nickdunn/entry_url_field</repo>
+	<repo type="github">https://github.com/symphonists/entry_url_field</repo>
 	<url type="discuss">http://symphony-cms.com/discuss/thread/34412/</url>
 	<types>
 		<type>Field</type>
 	</types>
 	<authors>
+		<author>
+			<name github="symphonists" symphony="community">Symphony Community</name>
+		</author>
 		<author>
 			<name github="nickdunn" symphony="nickdunn">Nick Dunn</name>
 			<website>http://nick-dunn.co.uk</website>
