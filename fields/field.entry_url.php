@@ -36,7 +36,7 @@
 		Settings:
 	-------------------------------------------------------------------------*/
 		
-		public function displaySettingsPanel(&$wrapper, $errors = null) {
+		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null) {
 			parent::displaySettingsPanel($wrapper, $errors);
 			
 			$order = $this->get('sortorder');
@@ -97,7 +97,7 @@
 		Publish:
 	-------------------------------------------------------------------------*/
 		
-		public function displayPublishPanel(&$wrapper, $data = null, $flagWithError = null, $prefix = null, $postfix = null) {
+		public function displayPublishPanel(XMLElement &$wrapper, $data = null, $flagWithError = null, $fieldnamePrefix = null, $fieldnamePostfix = null, $entry_id = null) {
 			$label = Widget::Label($this->get('label'));
 			$span = new XMLElement('span', null, array('class' => 'frame'));
 			
@@ -133,7 +133,7 @@
 			return self::__OK__;
 		}
 		
-		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = null) {
+		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null) {
 			$status = self::__OK__;
 			
 			return array('label' => null, 'value' => null);
@@ -143,7 +143,7 @@
 		Output:
 	-------------------------------------------------------------------------*/
 		
-		public function appendFormattedElement(&$wrapper, $data, $encode = false) {
+		public function appendFormattedElement(XMLElement &$wrapper, $data, $encode = false, $mode = null, $entry_id = null) {
 			if (!self::$ready) return;
 			
 			$element = new XMLElement($this->get('element_name'));
@@ -152,7 +152,7 @@
 			$wrapper->appendChild($element);
 		}
 		
-		public function prepareTableValue($data, XMLElement $link = null) {
+		public function prepareTableValue($data, XMLElement $link = null, $entry_id = null) {
 			if (empty($data)) return;
 			
 			$anchor =  Widget::Anchor($data['label'], $this->formatURL($data['value']));

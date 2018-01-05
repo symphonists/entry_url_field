@@ -8,7 +8,7 @@
 			Symphony::Database()->query("DROP TABLE `tbl_fields_entry_url`");
 		}
 
-		public function update($prev_version){
+		public function update($previousVersion = false){
 			if( version_compare($prev_version, '1.3.0', '<') ){
 				$fields = Symphony::Database()->fetch("SELECT `field_id`,`anchor_label` FROM `tbl_fields_entry_url`");
 
